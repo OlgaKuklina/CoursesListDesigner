@@ -136,7 +136,7 @@ public class CourseListGenerator {
             List<String> courseDepList = courseDepMap.get(courseId);
             for (String courseDepId : courseDepList) {
                 String edge = courseId + "-" + courseDepId;
-                weightedMap.put(edge, randomWeights.nextInt(100));
+                weightedMap.put(edge, randomWeights.nextInt(100)+1);
             }
 
         }
@@ -152,30 +152,37 @@ public class CourseListGenerator {
         distances.put(origin, 0);
         unvisitedVertexes.offer(origin);
 
-        while(!unvisitedVertexes.isEmpty()) {
+        while (!unvisitedVertexes.isEmpty()) {
             String unvisited = unvisitedVertexes.poll();
             List<String> courseDepIds = courseDepMap.get(unvisited);
-            if(courseDepIds!=null) {
-                for(String courseDepId : courseDepIds) {
+            if (courseDepIds != null) {
+                for (String courseDepId : courseDepIds) {
                     int newDistance = distances.get(unvisited) + weightedMap.get(unvisited + "-" + courseDepId);
-                    if(distances.containsKey(courseDepId)) {
+                    if (distances.containsKey(courseDepId)) {
                         Integer currentDistance = distances.get(courseDepId);
-                        if(currentDistance>newDistance) {
+                        if (currentDistance > newDistance) {
                             distances.put(courseDepId, newDistance);
                         }
-                    }
-                    else {
+                    } else {
                         distances.put(courseDepId, newDistance);
                     }
-
-                    if(!visitedVertexes.contains(courseDepId)) {
-                        unvisitedVertexes.offer(courseDepId);
+                }
+                Comparator<String> comparator = new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        return distances.get(o1).compareTo(distances.get(o2));
+                    }
+                };
+                courseDepIds.sort(comparator);
+                for (String courseId : courseDepIds) {
+                    if (!visitedVertexes.contains(courseId)) {
+                        unvisitedVertexes.offer(courseId);
                     }
                 }
             }
             visitedVertexes.add(unvisited);
         }
-        return distances.get(destination);
+        return distances.getOrDefault(destination, -1);
     }
 }
 
