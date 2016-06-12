@@ -13,50 +13,7 @@ public class CourseListGenerator {
         HashMap<String, List<String>> dependencyMap = new HashMap<>();
         BufferedReader fileReader = new BufferedReader(new FileReader(path));
         try {
-            String readLine;
-            String currentCourse = null;
-            while ((readLine = fileReader.readLine()) != null) {
-                if (readLine.equals("")) {
-                    continue;
-                }
-                if (readLine.startsWith("HCDE")) {
-                    int index = readLine.indexOf(" ", 5);
-                    currentCourse = readLine.substring(5, index);
-                    courseMap.put(currentCourse, readLine.substring(index + 1));
-                }
-                if (readLine.startsWith("Course")) {
-                    int index = readLine.indexOf(":") + 1;
-                    if (readLine.substring(index).isEmpty()) {
-                        dependencyMap.put(currentCourse, Collections.emptyList());
-                        continue;
-                    }
-                    LinkedList list = new LinkedList();
-                    int index2 = readLine.indexOf(",", index);
-                    if (index2 == -1) {
-                        if (readLine.substring(index).isEmpty()) {
-                            continue;
-                        } else {
-                            list.add(readLine.substring(index));
-                        }
-                    } else {
-                        while (index < readLine.length() && index2 < readLine.length()) {
-                            list.add(readLine.substring(index, index2));
-                            index = index2 + 1;
-                            index2 = readLine.indexOf(",", index);
-                            if (index2 == -1) {
-                                if (readLine.substring(index).isEmpty()) {
-                                    break;
-                                } else {
-                                    list.add(readLine.substring(index));
-                                    break;
-                                }
-                            }
-                        }
-
-                    }
-                    dependencyMap.put(currentCourse, list);
-                }
-            }
+            readCourseList(courseMap, dependencyMap, fileReader);
         } finally {
             fileReader.close();
         }
@@ -64,6 +21,54 @@ public class CourseListGenerator {
         returnRecommendedList(courseMap, courseSequence);
     }
 
+    private static void readCourseList(HashMap<String, String> courseMap, HashMap<String, List<String>> courseDepMap,
+                                       BufferedReader fileReader) throws IOException {
+
+        String readLine;
+        String currentCourse = null;
+        while ((readLine = fileReader.readLine()) != null) {
+            if (readLine.equals("")) {
+                continue;
+            }
+            if (readLine.startsWith("HCDE")) {
+                int index = readLine.indexOf(" ", 5);
+                currentCourse = readLine.substring(5, index);
+                courseMap.put(currentCourse, readLine.substring(index + 1));
+            }
+            if (readLine.startsWith("Course")) {
+                int index = readLine.indexOf(":") + 1;
+                if (readLine.substring(index).isEmpty()) {
+                    courseDepMap.put(currentCourse, Collections.emptyList());
+                    continue;
+                }
+                LinkedList list = new LinkedList();
+                int index2 = readLine.indexOf(",", index);
+                if (index2 == -1) {
+                    if (readLine.substring(index).isEmpty()) {
+                        continue;
+                    } else {
+                        list.add(readLine.substring(index));
+                    }
+                } else {
+                    while (index < readLine.length() && index2 < readLine.length()) {
+                        list.add(readLine.substring(index, index2));
+                        index = index2 + 1;
+                        index2 = readLine.indexOf(",", index);
+                        if (index2 == -1) {
+                            if (readLine.substring(index).isEmpty()) {
+                                break;
+                            } else {
+                                list.add(readLine.substring(index));
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                courseDepMap.put(currentCourse, list);
+            }
+        }
+    }
 
     public static List<String> courseSequenceRecommendation(HashMap<String, List<String>> courseDepMap) {
         Collection<String> courseSequence = new LinkedHashSet<>();
