@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CourseListGenerator {
 
@@ -20,6 +21,9 @@ public class CourseListGenerator {
         List<String> courseSequence = courseSequenceRecommendation(dependencyMap);
         returnRecommendedList(courseMap, courseSequence);
         System.out.println(depends("593", "519", dependencyMap) || depends("519", "593", dependencyMap));
+        HashMap<String, Integer> weights = buildWeights(dependencyMap);
+        System.out.println(weights);
+        System.out.println(dijkstra("593", "523", weights, dependencyMap));
     }
 
     private static void readCourseList(HashMap<String, String> courseMap, HashMap<String, List<String>> courseDepMap,
@@ -123,4 +127,70 @@ public class CourseListGenerator {
         }
         return false;
     }
+
+    public static HashMap<String, Integer> buildWeights(HashMap<String, List<String>> courseDepMap) {
+
+        HashMap<String, Integer> weightedMap = new HashMap<String, Integer>();
+        Random randomWeights = new Random();
+        for (String courseId : courseDepMap.keySet()) {
+            List<String> courseDepList = courseDepMap.get(courseId);
+            for (String courseDepId : courseDepList) {
+                String edge = courseId + "-" + courseDepId;
+                weightedMap.put(edge, randomWeights.nextInt(100));
+            }
+
+        }
+        return weightedMap;
+
+    }
+
+    public static int dijkstra(String origin, String destination, HashMap<String, Integer> weightedMap, HashMap<String, List<String>> courseDepMap) {
+
+        Queue<String> unvisitedVertexes = new LinkedList<>();
+        HashSet<String> visitedVertexes = new HashSet<>();
+        HashMap<String, Integer> distances = new HashMap<>();
+        distances.put(origin, 0);
+        unvisitedVertexes.offer(origin);
+
+        while(!unvisitedVertexes.isEmpty()) {
+            String unvisited = unvisitedVertexes.poll();
+            List<String> courseDepIds = courseDepMap.get(unvisited);
+            if(courseDepIds!=null) {
+                for(String courseDepId : courseDepIds) {
+                    int newDistance = distances.get(unvisited) + weightedMap.get(unvisited + "-" + courseDepId);
+                    if(distances.containsKey(courseDepId)) {
+                        Integer currentDistance = distances.get(courseDepId);
+                        if(currentDistance>newDistance) {
+                            distances.put(courseDepId, newDistance);
+                        }
+                    }
+                    else {
+                        distances.put(courseDepId, newDistance);
+                    }
+
+                    if(!visitedVertexes.contains(courseDepId)) {
+                        unvisitedVertexes.offer(courseDepId);
+                    }
+                }
+            }
+            visitedVertexes.add(unvisited);
+        }
+        return distances.get(destination);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
