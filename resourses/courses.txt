@@ -1,0 +1,92 @@
+HCDE 519 Qualitative Research Methods
+
+Course dependency:520,521,523
+
+HCDE 520 Design and Management of Complex Systems
+
+Course dependency:
+
+HCDE 521 Seminar: Current Issues in Human Centered Design and Engineering (1-2, max. 3)
+
+Course dependency:523
+
+HCDE 523 Design Use Build (DUB) Seminar (1, max. 3)
+
+Course dependency:
+
+HCDE 530 Computational Concepts in HCDE (4)
+
+Course dependency:523,521
+
+HCDE 532 Web Design Studio (2)
+
+Course dependency:536
+
+HCDE 534 Designing a Human Centered Venture (4)
+
+Course dependency:541,539,542
+
+HCDE 536 Interaction Design and Prototyping (4)
+
+Course dependency:
+
+HCDE 537 User-Centered Web Design (4)
+
+Course dependency:
+
+HCDE 539 Physical Computing and Prototyping (4)
+
+Course dependency:
+
+HCDE 541 Grant Writing for Career Development (4)
+
+Course dependency:
+
+HCDE 542 Theoretical Foundations in Human Centered Design and Engineering (4)
+
+Course dependency:
+
+HCDE 543 Empirical Traditions in Human Centered Design and Engineering (4)
+
+Course dependency:
+
+HCDE 544 Research Methods I (4)
+
+Course dependency:
+
+HCDE 545 Research Methods II (4)
+
+Course dependency:
+
+HCDE 546 Design Thinking (4)
+
+Course dependency:
+
+HCDE 547 Academic Development Seminar (1, max. 10)
+
+Course dependency:546
+
+HCDE 548 Advanced Topics in Human Centered Design and Engineering (4, max. 20)
+
+Course dependency:546,547
+
+HCDE 561 Advanced Japanese for Technical and Business Professions 1 (4)
+
+Course dependency:
+
+HCDE 562 Advanced Japanese for Technical and Business Professions 2 (4)
+
+Course dependency:561
+
+HCDE 563 Advanced Japanese for Technical and Business Professions 3 (4)
+
+Course dependency:561,562
+
+HCDE 592 Capstone Planning (1)
+
+Course dependency:563,562
+
+HCDE 593 Capstone (4)
+
+Course dependency:519,520,521,523,530,532,534,536,537,539,541,542,543,544,546,547,548,561,562,563,592
+
