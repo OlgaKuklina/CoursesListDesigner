@@ -19,6 +19,7 @@ public class CourseListGenerator {
         }
         List<String> courseSequence = courseSequenceRecommendation(dependencyMap);
         returnRecommendedList(courseMap, courseSequence);
+        System.out.println(depends("593", "519", dependencyMap) || depends("519", "593", dependencyMap));
     }
 
     private static void readCourseList(HashMap<String, String> courseMap, HashMap<String, List<String>> courseDepMap,
@@ -102,5 +103,24 @@ public class CourseListGenerator {
             }
         }
 
+    }
+
+    public static boolean depends(String courseId, String courseDepId, HashMap<String, List<String>> courseDepMap) {
+
+        if (courseDepMap.get(courseId) == null) {
+            return false;
+        }
+        Collection<String> depList = courseDepMap.get(courseId);
+        for (String depCourse : depList) {
+            if (depCourse.equals(courseDepId)) {
+                return true;
+            } else {
+                boolean res = depends(depCourse, courseDepId, courseDepMap);
+                if (res) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
